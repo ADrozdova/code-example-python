@@ -1,0 +1,30 @@
+n, s, f = map(int, input().split())
+g = []
+for i in range(n):
+    g.append(list(map(int, input().split())))
+
+
+def dijkstra(start, finish):
+    dist = [n * 1000] * n
+    dist[start] = 0
+    explored = [False] * n
+    for i in range(n):
+        u = 0
+        nowMin = n * 1000
+        for j in range(n):
+            if not explored[j] and dist[j] < nowMin:
+                nowMin = dist[j]
+                u = j
+        if dist[u] < n * 1000:
+            explored[u] = True
+            for v in range(n):
+                if g[u][v] > -1 and dist[v] > dist[u] + g[u][v]:
+                    dist[v] = dist[u] + g[u][v]
+    return dist[finish]
+
+
+ans = dijkstra(s - 1, f - 1)
+if ans == 1000 * n:
+    print(-1)
+else:
+    print(ans)
