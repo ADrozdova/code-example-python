@@ -1,0 +1,26 @@
+n, L = map(int, input().split())
+a = []
+for i in range(n):
+    b = list(map(int, input().split()))
+    a.append(b)
+
+
+def choose(lst1, lst2, x):
+    i = 0
+    j = 0
+    place = 0
+    ans = min(lst1[0], lst2[0])
+    while i < len(lst1) and j < len(lst2) and place < x:
+        if lst1[i] <= lst2[j]:
+            ans = lst1[i]
+            i += 1
+        else:
+            ans = lst2[j]
+            j += 1
+        place += 1
+    return ans
+
+
+for lst in range(n):
+    for other in range(lst + 1, n):
+        print(choose(a[lst], a[other], L))
