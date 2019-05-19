@@ -1,0 +1,26 @@
+import sys
+sys.setrecursionlimit(10 ** 6)
+n, m = map(int, input().split())
+edges = []
+for i in range(n + 1):
+    edges.append([])
+for i in range(m):
+    a, b = map(int, input().split())
+    if a != b:
+        edges[a].append(b)
+        edges[b].append(a)
+explored = [False] * (n + 1)
+comp = []
+
+
+def componentDFS(a):
+    comp.append(a)
+    explored[a] = True
+    for s in edges[a]:
+        if not explored[s]:
+            componentDFS(s)
+
+
+componentDFS(1)
+print(len(comp))
+print(*sorted(comp))
