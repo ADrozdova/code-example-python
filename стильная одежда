@@ -1,0 +1,27 @@
+n = int(input())
+a = list(map(int, input().split()))
+m = int(input())
+b = list(map(int, input().split()))
+
+
+def bestPair(a, b):
+    shirt = a[0]
+    pants = b[0]
+    nowMin = abs(shirt - pants)
+    i = 0
+    j = 0
+    while i < len(a) and j < len(b):
+        if abs(b[j] - a[i]) < nowMin:
+            shirt = a[i]
+            pants = b[j]
+            nowMin = abs(pants - shirt)
+        if a[i] < b[j]:
+            i += 1
+        elif a[i] == b[j]:
+            return (a[i], b[j])
+        else:
+            j += 1
+    return (shirt, pants)
+
+
+print(*bestPair(a, b))
