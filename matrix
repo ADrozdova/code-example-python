@@ -1,0 +1,80 @@
+class Matrix:
+    def __init__(self, args):
+        self.lst = []
+        for i in range(len(args)):
+            self.lst.append([])
+            for j in range(len(args[i])):
+                self.lst[i].append(args[i][j])
+
+    def __str__(self):
+        ans = ''
+        for i in range(len(self.lst)):
+            for j in range(len(self.lst[i])):
+                if j < len(self.lst[i]) - 1:
+                    ans += str(self.lst[i][j]) + '\t'
+                elif i < len(self.lst) - 1:
+                    ans += str(self.lst[i][j]) + '\n'
+                elif i == len(self.lst) - 1 and j == len(self.lst[i]) - 1:
+                    ans += str(self.lst[i][j])
+        return ans
+
+    def size(self):
+        return len(self.lst), len(self.lst[0])
+
+    def __add__(self, other):
+        if self.size() == other.size():
+            ans = []
+            for i in range(len(self.lst)):
+                ans.append([])
+                for j in range(len(self.lst[0])):
+                    ans[i].append(self.lst[i][j] + other.lst[i][j])
+            return Matrix(ans)
+        else:
+            raise MatrixError(self, other)
+
+    def __mul__(self, other):
+        if isinstance(other, Matrix):
+            if self.size()[1] != other.size()[0]:
+                raise MatrixError(self, other)
+            else:
+                ans = []
+                for i in range(self.size()[0]):
+                    ans.append([])
+                    for j in range(other.size()[1]):
+                        ans[i].append(0)
+                        for h in range(other.size()[0]):
+                            ans[i][j] += self.lst[i][h] * other.lst[h][j]
+            return Matrix(ans)
+        else:
+            ans = []
+            for i in range(len(self.lst)):
+                ans.append([])
+                for j in range(len(self.lst[0])):
+                    ans[i].append(self.lst[i][j] * other)
+            return Matrix(ans)
+
+    __rmul__ = __mul__
+
+    def transpose(self):
+        ans = []
+        for i in range(len(self.lst[0])):
+            ans.append([])
+            for j in range(len(self.lst)):
+                ans[i].append(self.lst[j][i])
+        self.lst = ans
+        return self
+
+    @staticmethod
+    def transposed(m):
+        ans = []
+        for i in range(len(m.lst[0])):
+            ans.append([])
+            for j in range(len(m.lst)):
+                ans[i].append(m.lst[j][i])
+        return Matrix(ans)
+
+
+class MatrixError(BaseException):
+    def __init__(self, matrix1, matrix2):
+        self.matrix1 = matrix1
+        self.matrix2 = matrix2
