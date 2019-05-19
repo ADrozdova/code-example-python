@@ -78,3 +78,20 @@ class MatrixError(BaseException):
     def __init__(self, matrix1, matrix2):
         self.matrix1 = matrix1
         self.matrix2 = matrix2
+
+
+class SquareMatrix(Matrix):
+    def __pow__(self, n):
+        if n == 0:
+            ans = []
+            for i in range(self.size()[0]):
+                ans.append([0] * self.size()[0])
+                ans[i][i] = 1
+            return SquareMatrix(ans)
+        elif n == 1:
+            return self
+        elif n == 2:
+            return self * self
+        elif n % 2 == 0:
+            return SquareMatrix((self * self).lst) ** (n // 2)
+        return self * (self ** (n - 1))
