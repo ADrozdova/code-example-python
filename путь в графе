@@ -1,0 +1,49 @@
+import sys
+sys.setrecursionlimit(10 ** 6)
+n = int(input())
+edges = []
+for i in range(n):
+    edges.append(list(map(int, input().split())))
+v, u = map(int, input().split())
+explored = [False] * n
+q = []
+
+
+def BFS(a):
+    start = 0
+    explored[a] = start + 1
+    q.append(a)
+    while len(q[start:]) > 0:
+        x = q[start]
+        explored[x] = start + 1
+        start += 1
+        for s in range(len(edges[x])):
+            if edges[x][s] == 1:
+                if not explored[s]:
+                    explored[s] = True
+                    q.append(s)
+
+
+def findPath(b, p):
+    p.append(b + 1)
+    if explored[b] == 1:
+        print(len(p) - 1)
+        print(*p[::-1])
+        return
+    nowMin = 0
+    nextt = 0
+    for j in range(len(edges[b])):
+        if edges[b][j] == 1 and (nowMin == 0 or nowMin > explored[j]):
+            nowMin = explored[j]
+            nextt = j
+    findPath(nextt, p)
+
+
+if v == u:
+    print(0)
+else:
+    BFS(v - 1)
+    if not explored[u - 1]:
+        print(-1)
+    else:
+        findPath(u - 1, [])
